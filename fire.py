@@ -4,10 +4,9 @@ import time
 import random
 
 # 1. Configuration du Raspberry Pi Pico
-PIN_DATA = 28      # Broche GP15
-NB_LEDS = 64       # Matrice 8x8
-PIN_MATRICE = machine.Pin(PIN_DATA, machine.Pin.OUT)
-np = neopixel.NeoPixel(PIN_MATRICE, NB_LEDS)
+PIN = 28      		# Broche GP28
+NB_LEDS = 64       	# Matrice 8x8
+np = neopixel.NeoPixel(machine.Pin(PIN),NB_LEDS)
 
 # 2. Création de la grille de "chaleur" (8 colonnes x 8 lignes)
 # 0 = froid noir, 255 = chaleur maximale blanche/jaune
@@ -26,14 +25,11 @@ def couleur_feu(degre):
         return (255, 255, int((degre - 180) * 3.4))
 
 # Fonction pour convertir les coordonnées X,Y en index de LED
-# Gère le câblage standard en "Zig-Zag" de la plupart des matrices 8x8
-def index_led(x, y):
-    if y % 2 == 0:
-        # Ligne paire : de gauche à droite
-        return (y * 8) + x
-    else:
-        # Ligne impaire : de droite à gauche (reverse)
-        return (y * 8) + (7 - x)
+def index_led(x,y):
+    if y >= 0 and y < 8 and x >=0 and x < 8:
+        return int(y*8)+x
+
+
 
 # 3. Boucle principale de l'animation
 print("Animation Feu lancée... Appuyez sur Ctrl+C dans Thonny pour stopper.")
@@ -69,3 +65,4 @@ while True:
     
     # Vitesse de l'animation (plus le temps est court, plus le feu est rapide)
     time.sleep(0.06)
+
